@@ -27,6 +27,11 @@ class Collection extends Model
         return $this->belongsToMany(Product::class, 'collection_product');
     }
 
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->image) : null;
+    }
+
     public function getRouteKeyName(): string
     {
         return 'slug';

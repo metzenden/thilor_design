@@ -21,6 +21,11 @@ class Banner extends Model
         ];
     }
 
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->image) : null;
+    }
+
     public function scopeVisible(Builder $query): Builder
     {
         $now = now();

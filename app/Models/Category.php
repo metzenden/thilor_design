@@ -36,6 +36,11 @@ class Category extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->image) : null;
+    }
+
     public function getRouteKeyName(): string
     {
         return 'slug';
