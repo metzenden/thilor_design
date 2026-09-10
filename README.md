@@ -1,59 +1,193 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# THILOR DESIGN — Site e-commerce
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Application e-commerce complète pour la vente de tenues africaines,
+développée en Laravel 12. Front-office fidèle à la maquette fournie
+(élégance africaine, accents dorés), back-office Filament pour gérer
+catalogue, commandes, marketing et contenu.
 
-## About Laravel
+## Stack technique
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Composant | Choix |
+|---|---|
+| Framework | Laravel 12 (PHP 8.3+, développé avec 8.4) |
+| Base de données | MySQL/MariaDB en production, SQLite en développement local |
+| Rendu | Blade + Tailwind CSS + Vite |
+| Authentification | Laravel Breeze (sessions), Spatie Permission (rôles admin/gestionnaire/client) |
+| Back-office | Filament v3 |
+| Images | Intervention Image (redimensionnement + conversion WebP automatique) |
+| Tests | PHPUnit (Laravel Test) |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Voir [`docs/PLAN.md`](docs/PLAN.md) pour le détail des décisions
+d'architecture et des choix faits sur les points d'ambiguïté du cahier des
+charges.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Prérequis
 
-## Learning Laravel
+- PHP 8.3+ avec extensions `pdo_mysql` (ou `pdo_sqlite` en local), `gd`,
+  `intl`, `mbstring`, `curl`, `zip`, `fileinfo`, `xml`, `tokenizer`,
+  `bcmath`.
+- Composer 2.x
+- Node.js 20+ et npm (uniquement pour compiler les assets — jamais requis
+  en production, voir le guide de déploiement)
+- MySQL/MariaDB (production) — SQLite suffit en développement local
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Installation locale
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
 
-## Laravel Sponsors
+# En local, SQLite est la façon la plus rapide de démarrer (aucun serveur
+# MySQL à configurer) : dans .env, remplacez temporairement
+#   DB_CONNECTION=mysql
+# par
+#   DB_CONNECTION=sqlite
+# et supprimez/commentez les lignes DB_HOST/DB_PORT/DB_DATABASE/DB_USERNAME/DB_PASSWORD
+touch database/database.sqlite
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+php artisan migrate --seed   # crée le schéma + données de démonstration
+php artisan storage:link     # expose storage/app/public sur /storage
 
-### Premium Partners
+npm install
+npm run build                # ou `npm run dev` pendant le développement
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+php artisan serve
+```
 
-## Contributing
+Le site est alors accessible sur `http://localhost:8000`, le back-office
+sur `http://localhost:8000/admin`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Comptes de démonstration (après `--seed`)
 
-## Code of Conduct
+| Rôle | Email | Mot de passe |
+|---|---|---|
+| Administrateur | `admin@thilor-design.com` | `password` |
+| Client | `fatou.diop@example.com` | `password` |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**Ne jamais conserver ces comptes de démonstration en production** — voir
+la checklist de [`docs/DEPLOIEMENT_OVH.md`](docs/DEPLOIEMENT_OVH.md).
 
-## Security Vulnerabilities
+## Commandes de développement
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan serve              # serveur de développement
+npm run dev                    # compilation Vite avec rechargement à chaud
 
-## License
+php artisan test                              # suite de tests complète
+php artisan test tests/Feature/Shop           # un dossier de tests
+php artisan test --filter=CheckoutFlowTest    # un fichier précis
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+php artisan migrate:fresh --seed              # réinitialise la base avec les données de démo
+
+php artisan tinker             # console interactive
+```
+
+## Commandes de production
+
+```bash
+composer install --no-dev --optimize-autoloader --no-interaction
+npm ci && npm run build
+
+php artisan migrate --force
+php artisan storage:link
+
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan event:cache
+```
+
+Voir le guide complet et la checklist de mise en production :
+[`docs/DEPLOIEMENT_OVH.md`](docs/DEPLOIEMENT_OVH.md).
+
+## Variables d'environnement principales
+
+Toutes documentées et commentées dans [`.env.example`](.env.example).
+Points d'attention :
+
+- `APP_DEBUG` **doit** être à `false` en production.
+- `APP_URL` doit correspondre au domaine réel, en `https://` une fois le
+  SSL actif (nécessaire pour que `SESSION_SECURE_COOKIE=true` fonctionne).
+- `DB_*` : identifiants de la base MySQL fournie par OVH.
+- `MAIL_*` : SMTP pour les emails transactionnels (confirmation de compte,
+  réinitialisation de mot de passe).
+
+Aucun secret n'est stocké ailleurs que dans `.env` (jamais versionné).
+
+## Architecture du code
+
+```
+app/
+  Contracts/PaymentGatewayContract.php   # interface commune à tous les moyens de paiement
+  Filament/                              # back-office (Resources, Widgets, Pages)
+  Http/Controllers/                      # contrôleurs fins (front-office)
+  Http/Requests/                         # validation (Form Requests)
+  Models/                                # domaine Eloquent
+  Policies/                              # autorisation (adresses, commandes)
+  Services/                              # logique métier : CartService, OrderService,
+                                          #   Payments\* (paiement à la livraison fonctionnel,
+                                          #   carte/Wave/Orange Money en architecture prête,
+                                          #   non branchés tant que les identifiants marchands
+                                          #   ne sont pas fournis)
+  Support/                               # ImageUploader (resize/WebP), PlaceholderImage (démo)
+database/
+  migrations/  factories/  seeders/
+resources/views/
+  components/layouts/shop.blade.php      # layout principal du front-office
+  home.blade.php, catalog/, products/, cart/, checkout/, account/, ...
+docs/
+  PLAN.md                    # plan technique, backlog, décisions
+  DEPLOIEMENT_OVH.md         # guide de déploiement pas à pas
+  GUIDE_ADMINISTRATEUR.md    # guide d'utilisation du back-office
+```
+
+## Fonctionnalités livrées
+
+- **Front-office** : accueil (bannières, catégories, nouveautés,
+  promotions, meilleures ventes, collections, avis, newsletter), catalogue
+  avec filtres (catégorie/taille/couleur/prix/disponibilité) et tri,
+  recherche, fiche produit (galerie, variantes, avis, produits similaires),
+  panier, checkout (informations → livraison → paiement → confirmation),
+  compte client (tableau de bord, commandes, adresses, favoris, avis),
+  contact, blog/pages de contenu, footer complet.
+- **Back-office Filament** : dashboard (CA, commandes, stocks faibles),
+  CRUD produits (images + variantes tailles/couleurs/stock), catégories,
+  collections, commandes (statuts distincts commande/paiement), coupons,
+  modes de livraison, avis (modération), bannières, pages/blog, messages
+  de contact, newsletter, paramètres boutique/SEO, administrateurs et
+  rôles, journal d'activité.
+- **Paiement** : paiement à la livraison fonctionnel de bout en bout ;
+  architecture extensible (`PaymentGatewayContract`) pour carte bancaire,
+  Wave, Orange Money — non simulés tant que les accès marchands ne sont
+  pas fournis par le client.
+- **SEO** : slugs uniques, meta title/description dynamiques, canonical,
+  sitemap.xml, robots.txt, Open Graph, Twitter Cards, Schema.org/Product,
+  breadcrumbs, 404 personnalisée.
+- **Sécurité** : CSRF, Form Requests, policies (isolation des données
+  client), hashage des mots de passe, rate limiting sur les actions
+  sensibles (connexion, inscription, contact, newsletter, coupon,
+  paiement), upload d'images restreint et retraité (jamais le fichier
+  d'origine stocké tel quel), journal d'activité administrateur.
+- **Performance** : eager loading systématique, pagination serveur, index
+  SQL sur les colonnes de recherche/relation, cache des paramètres
+  boutique/navigation/sitemap, images compressées et converties en WebP.
+- **Tests** : 56 tests automatisés couvrant inscription/connexion,
+  catalogue/recherche, panier, calcul des prix et promotions, création de
+  commande et gestion des stocks, permissions admin/gestionnaire/client,
+  isolation des données client, validations et cas d'erreur.
+
+## Limites connues / à prévoir avec le client
+
+- **Paiement carte bancaire / Wave / Orange Money** : l'architecture est
+  prête (`app/Services/Payments/`) mais nécessite les identifiants
+  marchands et contrats avec ces prestataires, non fournis à ce stade.
+- **Images de démonstration** : les seeders génèrent des visuels de
+  substitution colorés (pas de vraies photos produits) — à remplacer par
+  le vrai catalogue avant mise en production.
+- **Emails transactionnels** : fonctionnels dès qu'un SMTP est configuré
+  (voir `.env`), non testés avec un prestataire mail réel dans cet
+  environnement de développement.
+- **Hébergement mutualisé OVH** : pas de file d'attente asynchrone
+  persistante ni de WebSocket — toutes les opérations (dont la création de
+  commande) sont volontairement synchrones pour rester compatible.
