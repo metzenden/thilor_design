@@ -42,11 +42,16 @@ Règles :
 - Index sur slugs, foreign keys, `orders.status`, `products.category_id`, recherche.
 
 ## 5. Catalogue / navigation
-Catégories racines de la maquette : Femme, Homme, Enfant + Haute couture et Prêt-à-porter
-en tant que **collections transverses** (un produit peut appartenir à une catégorie ET à
-une collection). Navigation : Accueil, Femme, Homme, Enfant, Collections, Promotions,
-Blog, Contact — "Promotions" = vue filtrée `on_sale=true`, "Blog" = `pages` de type article
-(liste + détail), sans moteur de blog complexe (hors périmètre du cahier des charges).
+La maquette (filtres catalogue, bloc "Catégories populaires") montre Femme, Homme, Enfant,
+Haute couture et Accessoires comme des **catégories** au même niveau (c'est le filtre
+"Catégories" du panneau de filtres). Décision retenue : 5 catégories plates —
+Femme, Homme, Enfant, Haute couture, Accessoires. "Prêt-à-porter" (cité au §5 du cahier des
+charges mais absent de la maquette) est modélisé comme **collection** transverse au même
+titre que d'autres mises en avant marketing (ex. "Nouveautés", "Édition Mariage") — un
+produit peut appartenir à une catégorie ET à une ou plusieurs collections. Navigation
+principale : Accueil, Femme, Homme, Enfant, Collections, Promotions, Blog, Contact —
+"Promotions" = vue filtrée `on_sale=true`, "Blog" = `pages` de type article (liste + détail),
+sans moteur de blog complexe (hors périmètre du cahier des charges).
 
 ## 6. Paiement
 Interface `PaymentGatewayContract` avec implémentation `CashOnDeliveryGateway`
