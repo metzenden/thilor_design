@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\CleansUpImageFiles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Collection extends Model
 {
-    use HasFactory;
+    use CleansUpImageFiles, HasFactory;
+
+    private const CLEANABLE_IMAGE_FIELDS = ['image'];
 
     protected $table = 'collections';
 

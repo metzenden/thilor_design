@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\CleansUpImageFiles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Page extends Model
 {
-    use HasFactory;
+    use CleansUpImageFiles, HasFactory;
+
+    private const CLEANABLE_IMAGE_FIELDS = ['cover_image'];
 
     protected $fillable = [
         'type', 'title', 'slug', 'excerpt', 'content', 'cover_image',

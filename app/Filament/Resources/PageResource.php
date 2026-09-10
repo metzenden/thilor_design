@@ -40,7 +40,9 @@ class PageResource extends Resource
                 ->afterStateUpdated(fn (string $state, callable $set) => $set('slug', Str::slug($state))),
             Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true),
             Forms\Components\TextInput::make('excerpt')->label('Extrait')->columnSpanFull(),
-            Forms\Components\FileUpload::make('cover_image')->image()->directory('pages')->label('Image de couverture'),
+            Forms\Components\FileUpload::make('cover_image')->image()->maxSize(5120)->directory('pages')
+                ->saveUploadedFileUsing(fn ($file) => \App\Support\ImageUploader::store($file, 'pages'))
+                ->label('Image de couverture'),
             Forms\Components\RichEditor::make('content')->label('Contenu')->required()->columnSpanFull(),
             Forms\Components\Toggle::make('is_published')->label('Publié')->default(true),
             Forms\Components\DateTimePicker::make('published_at')->default(now()),

@@ -40,7 +40,9 @@ class CollectionResource extends Resource
                 ->unique(ignoreRecord: true),
             Forms\Components\FileUpload::make('image')
                 ->image()
-                ->directory('collections'),
+                ->maxSize(5120)
+                ->directory('collections')
+                ->saveUploadedFileUsing(fn ($file) => \App\Support\ImageUploader::store($file, 'collections')),
             Forms\Components\Textarea::make('description')
                 ->columnSpanFull(),
             Forms\Components\Select::make('products')

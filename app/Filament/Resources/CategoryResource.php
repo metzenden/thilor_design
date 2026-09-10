@@ -50,7 +50,9 @@ class CategoryResource extends Resource
                         ->default(0),
                     Forms\Components\FileUpload::make('image')
                         ->image()
+                        ->maxSize(5120)
                         ->directory('categories')
+                        ->saveUploadedFileUsing(fn ($file) => \App\Support\ImageUploader::store($file, 'categories'))
                         ->columnSpanFull(),
                     Forms\Components\Textarea::make('description')
                         ->columnSpanFull(),

@@ -52,6 +52,7 @@ class AdminPanelAccessTest extends TestCase
             '/admin/newsletter-subscribers',
             '/admin/contact-messages',
             '/admin/settings',
+            '/admin/activity-log',
         ] as $path) {
             $this->actingAs($admin)->get($path)->assertOk();
         }

@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\CleansUpImageFiles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Banner extends Model
 {
+    use CleansUpImageFiles;
+
+    private const CLEANABLE_IMAGE_FIELDS = ['image'];
+
     protected $fillable = [
         'title', 'subtitle', 'image', 'cta_label', 'link', 'position_key',
         'position', 'is_active', 'starts_at', 'ends_at',

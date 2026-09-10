@@ -30,7 +30,9 @@ class BannerResource extends Resource
         return $form->schema([
             Forms\Components\TextInput::make('title')->label('Titre')->required(),
             Forms\Components\TextInput::make('subtitle')->label('Sous-titre'),
-            Forms\Components\FileUpload::make('image')->image()->directory('banners')->required(),
+            Forms\Components\FileUpload::make('image')->image()->maxSize(5120)->directory('banners')
+                ->saveUploadedFileUsing(fn ($file) => \App\Support\ImageUploader::store($file, 'banners', maxWidth: 2000))
+                ->required(),
             Forms\Components\TextInput::make('cta_label')->label('Texte du bouton'),
             Forms\Components\TextInput::make('link')->label('Lien'),
             Forms\Components\Select::make('position_key')

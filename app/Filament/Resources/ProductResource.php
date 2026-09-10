@@ -94,7 +94,9 @@ class ProductResource extends Resource
                                 ->schema([
                                     Forms\Components\FileUpload::make('path')
                                         ->image()
+                                        ->maxSize(5120)
                                         ->directory('products')
+                                        ->saveUploadedFileUsing(fn ($file) => \App\Support\ImageUploader::store($file, 'products'))
                                         ->required(),
                                     Forms\Components\TextInput::make('alt_text')
                                         ->label('Texte alternatif (SEO)')
