@@ -29,7 +29,10 @@ charges.
 - Composer 2.x
 - Node.js 20+ et npm (uniquement pour compiler les assets — jamais requis
   en production, voir le guide de déploiement)
-- MySQL/MariaDB (production) — SQLite suffit en développement local
+- MySQL/MariaDB — utilisé en production **et** en développement local dans
+  ce projet (via un serveur MySQL local, ex. XAMPP/Laragon/MAMP). SQLite
+  reste une alternative de secours si aucun serveur MySQL n'est disponible
+  (voir plus bas).
 
 ## Installation locale
 
@@ -38,13 +41,8 @@ composer install
 cp .env.example .env
 php artisan key:generate
 
-# En local, SQLite est la façon la plus rapide de démarrer (aucun serveur
-# MySQL à configurer) : dans .env, remplacez temporairement
-#   DB_CONNECTION=mysql
-# par
-#   DB_CONNECTION=sqlite
-# et supprimez/commentez les lignes DB_HOST/DB_PORT/DB_DATABASE/DB_USERNAME/DB_PASSWORD
-touch database/database.sqlite
+# Dans .env, DB_CONNECTION=mysql avec les accès de votre serveur MySQL
+# local (créez la base au préalable, ex. `CREATE DATABASE thilor_design;`).
 
 php artisan migrate --seed   # crée le schéma + données de démonstration
 php artisan storage:link     # expose storage/app/public sur /storage
@@ -54,6 +52,14 @@ npm run build                # ou `npm run dev` pendant le développement
 
 php artisan serve
 ```
+
+**Sans serveur MySQL disponible** (ex. environnement d'intégration
+continue) : dans `.env`, remplacez `DB_CONNECTION=mysql` par
+`DB_CONNECTION=sqlite`, supprimez/commentez les lignes
+`DB_HOST`/`DB_PORT`/`DB_DATABASE`/`DB_USERNAME`/`DB_PASSWORD`, puis
+`touch database/database.sqlite` avant `php artisan migrate --seed`. Le
+schéma est 100% portable entre les deux moteurs (aucune fonction
+spécifique à l'un ou l'autre).
 
 Le site est alors accessible sur `http://localhost:8000`, le back-office
 sur `http://localhost:8000/admin`.
