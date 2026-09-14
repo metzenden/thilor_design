@@ -64,6 +64,19 @@ spécifique à l'un ou l'autre).
 Le site est alors accessible sur `http://localhost:8000`, le back-office
 sur `http://localhost:8000/admin`.
 
+### Photos de démonstration réalistes (optionnel)
+
+Les seeders génèrent par défaut des visuels de substitution (motifs façon
+wax) plutôt que de vraies photos produits. Pour les remplacer par de vraies
+photos libres de droits le temps d'une démo (à ne pas garder en
+production — voir `docs/GUIDE_ADMINISTRATEUR.md` pour uploader vos vraies
+photos) :
+
+```bash
+# Clé gratuite sur https://www.pexels.com/api/ (approbation instantanée)
+php artisan demo:fetch-photos --key=VOTRE_CLE_API
+```
+
 ### Comptes de démonstration (après `--seed`)
 
 | Rôle | Email | Mot de passe |

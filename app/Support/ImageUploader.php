@@ -35,6 +35,29 @@ class ImageUploader
         return $filename;
     }
 
+    /**
+     * Même traitement que store(), mais à partir d'octets déjà en mémoire
+     * (ex. un fichier téléchargé par un script, plutôt qu'un upload HTTP).
+     */
+    public static function storeFromContents(string $contents, string $directory, int $maxWidth = 1600, int $quality = 80): string
+    {
+        $manager = new ImageManager(new Driver);
+
+        $image = $manager->read($contents);
+
+        if ($image->width() > $maxWidth) {
+            $image->scaleDown(width: $maxWidth);
+        }
+
+        $encoded = $image->toWebp($quality);
+
+        $filename = trim($directory, '/').'/'.now()->format('Y/m').'/'.Str::uuid().'.webp';
+
+        Storage::disk('public')->put($filename, (string) $encoded);
+
+        return $filename;
+    }
+
     public static function delete(?string $path): void
     {
         if ($path && Storage::disk('public')->exists($path)) {

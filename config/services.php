@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    // Utilisé uniquement par `php artisan demo:fetch-photos` (photos de
+    // démonstration) — jamais requis pour faire fonctionner le site.
+    'pexels' => [
+        'key' => env('PEXELS_API_KEY'),
+    ],
+
 ];
