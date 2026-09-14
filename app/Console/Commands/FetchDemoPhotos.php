@@ -9,7 +9,12 @@ use Illuminate\Support\Facades\Http;
 
 /**
  * Remplace les visuels de démonstration (motifs générés) par de vraies photos
- * libres de droits (API Pexels), pour une démo plus parlante visuellement.
+ * de mode libres de droits (API Pexels), pour une démo plus parlante
+ * visuellement. Les requêtes de recherche ciblent le type de vêtement (robe,
+ * boubou/kaftan, dashiki, accessoires...) sans restreindre à des photos
+ * étiquetées "africaines" — l'objectif est une photo de mode pertinente pour
+ * l'article (ex. un mannequin en boubou/caftan), quelle que soit l'origine
+ * de la photo.
  *
  * IMPORTANT — à lancer sur votre machine (avec un accès internet normal),
  * PAS dans un environnement sans accès réseau externe. Les photos obtenues
@@ -39,29 +44,29 @@ class FetchDemoPhotos extends Command
      * Vérifiés dans l'ordre ; le premier qui matche gagne.
      */
     private const KEYWORD_QUERIES = [
-        'wax' => 'ankara african print dress',
-        'bazin' => 'bazin riche african dress',
-        'boubou' => 'boubou african traditional dress',
-        'dashiki' => 'dashiki african print shirt',
-        'bogolan' => 'bogolan african textile fashion',
-        'turban' => 'african headwrap turban fashion',
-        'sac' => 'african print handbag',
-        'boucle' => 'african beaded earrings jewelry',
-        'chemise' => 'african print shirt men',
-        'veste' => 'african print jacket fashion',
-        'combinaison' => 'african print jumpsuit',
-        'jupe' => 'african print skirt',
-        'robe' => 'african print dress woman',
-        'ensemble' => 'african fashion outfit',
+        'wax' => 'colorful print dress fashion model',
+        'bazin' => 'embroidered dress fashion model',
+        'boubou' => 'kaftan dress fashion model',
+        'dashiki' => 'printed tunic shirt fashion model',
+        'bogolan' => 'printed textile fashion dress',
+        'turban' => 'headwrap turban fashion model',
+        'sac' => 'handbag fashion accessory',
+        'boucle' => 'earrings fashion jewelry model',
+        'chemise' => 'printed shirt fashion man',
+        'veste' => 'printed jacket fashion model',
+        'combinaison' => 'jumpsuit fashion model',
+        'jupe' => 'printed skirt fashion model',
+        'robe' => 'colorful dress fashion model woman',
+        'ensemble' => 'fashion outfit model',
     ];
 
     /** Repli par catégorie si aucun mot-clé du nom ne correspond. */
     private const CATEGORY_QUERIES = [
-        'Femme' => 'african fashion woman dress',
-        'Homme' => 'african fashion man traditional',
-        'Enfant' => 'african fashion kids',
-        'Haute couture' => 'african haute couture dress',
-        'Accessoires' => 'african fashion accessories',
+        'Femme' => 'woman fashion model dress',
+        'Homme' => 'man fashion model outfit',
+        'Enfant' => 'kids fashion model',
+        'Haute couture' => 'haute couture fashion dress',
+        'Accessoires' => 'fashion accessories',
     ];
 
     public function handle(): int
@@ -143,7 +148,7 @@ class FetchDemoPhotos extends Command
             }
         }
 
-        return self::CATEGORY_QUERIES[$product->category->name] ?? 'african fashion';
+        return self::CATEGORY_QUERIES[$product->category->name] ?? 'fashion model';
     }
 
     /**
