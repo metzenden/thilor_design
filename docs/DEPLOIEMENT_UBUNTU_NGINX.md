@@ -59,7 +59,7 @@ php artisan key:generate --force
 ```
 APP_ENV=local
 APP_DEBUG=true
-APP_URL=http://ADRESSE-IP-OU-DOMAINE-DU-SERVEUR
+APP_URL=http://51.91.58.139:5000
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -104,8 +104,8 @@ Contenu :
 
 ```nginx
 server {
-    listen 80;
-    server_name _;               # ou votre nom de domaine / IP
+    listen 5000;
+    server_name 51.91.58.139;
     root /var/www/thilor-design/public;
 
     index index.php;
@@ -140,13 +140,25 @@ sudo systemctl reload nginx
 sudo systemctl restart php8.3-fpm
 ```
 
+**Ouvrez le port 5000 dans le pare-feu** — le port 5000 n'est pas un port
+web standard (80/443), il est très probablement bloqué par défaut :
+
+```bash
+sudo ufw allow 5000/tcp   # si ufw est actif (sudo ufw status pour vérifier)
+```
+
+Si le serveur est chez un hébergeur cloud (OVH, Scaleway...), vérifiez
+**aussi** le pare-feu réseau/security group depuis leur espace client
+(souvent appelé "Firewall réseau" ou "Security Group") — il bloque le
+trafic entrant **avant** même d'atteindre `ufw`, une règle `ufw` seule ne
+suffit pas toujours sur ce type d'offre.
+
 ## 8. C'est en ligne
 
-Ouvrez `http://ADRESSE-IP-DU-SERVEUR` (ou le nom de domaine que vous avez
-mis dans `server_name` et `APP_URL`).
+Ouvrez **`http://51.91.58.139:5000`** dans votre navigateur.
 
-- Site : `http://ADRESSE-IP-DU-SERVEUR`
-- Back-office : `http://ADRESSE-IP-DU-SERVEUR/admin`
+- Site : `http://51.91.58.139:5000`
+- Back-office : `http://51.91.58.139:5000/admin`
   (`admin@thilor-design.com` / `password`)
 
 ## Mettre à jour le site après un nouveau `git pull`
