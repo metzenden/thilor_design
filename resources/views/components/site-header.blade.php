@@ -2,7 +2,7 @@
 <header class="border-b border-ink/10 bg-cream" x-data="{ mobileOpen: false }">
     <div class="container-shop flex items-center gap-6 py-4">
         <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
-            <span class="flex h-11 w-11 items-center justify-center rounded-full border-2 border-gold font-serif text-lg font-semibold text-gold">TD</span>
+            <x-brand-logo :size="44" />
             <span class="hidden flex-col leading-tight sm:flex">
                 <span class="font-serif text-lg font-semibold tracking-wide text-ink">{{ $shopName }}</span>
             </span>

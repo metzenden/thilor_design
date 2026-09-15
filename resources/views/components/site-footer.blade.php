@@ -3,7 +3,7 @@
     <div class="container-shop grid grid-cols-2 gap-8 py-12 text-sm sm:grid-cols-3 lg:grid-cols-6">
         <div class="col-span-2 lg:col-span-2">
             <div class="flex items-center gap-3">
-                <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gold font-serif text-base font-semibold text-gold">TD</span>
+                <x-brand-logo :size="40" />
                 <span class="font-serif text-base font-semibold text-ink">{{ $shopName }}</span>
             </div>
             <p class="mt-3 text-ink/60">{{ \App\Models\Setting::get('shop_tagline', "L'élégance africaine à votre style") }}</p>
