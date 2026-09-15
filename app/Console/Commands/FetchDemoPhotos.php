@@ -41,14 +41,15 @@ class FetchDemoPhotos extends Command
 
     /**
      * Mots-clés détectés dans le nom du produit -> requête de recherche Pexels.
-     * Vérifiés dans l'ordre ; le premier qui matche gagne.
+     * Vérifiés DANS CET ORDRE ; le premier qui matche gagne — du plus
+     * spécifique (type de vêtement/accessoire précis) au plus générique.
+     * "wax" est délibérément en dernier : décrit un imprimé de tissu, présent
+     * dans la quasi-totalité des noms de produits du catalogue, et masquerait
+     * sinon des mots-clés bien plus pertinents (turban, sac, chemise...) pour
+     * la recherche de photo — c'est exactement le bug qui limitait les
+     * résultats à une requête générique répétée pour la plupart des produits.
      */
     private const KEYWORD_QUERIES = [
-        'wax' => 'colorful print dress fashion model',
-        'bazin' => 'embroidered dress fashion model',
-        'boubou' => 'kaftan dress fashion model',
-        'dashiki' => 'printed tunic shirt fashion model',
-        'bogolan' => 'printed textile fashion dress',
         'turban' => 'headwrap turban fashion model',
         'sac' => 'handbag fashion accessory',
         'boucle' => 'earrings fashion jewelry model',
@@ -56,8 +57,13 @@ class FetchDemoPhotos extends Command
         'veste' => 'printed jacket fashion model',
         'combinaison' => 'jumpsuit fashion model',
         'jupe' => 'printed skirt fashion model',
-        'robe' => 'colorful dress fashion model woman',
+        'dashiki' => 'printed tunic shirt fashion model',
+        'bazin' => 'embroidered dress fashion model',
+        'boubou' => 'kaftan dress fashion model',
+        'bogolan' => 'printed textile fashion dress',
         'ensemble' => 'fashion outfit model',
+        'robe' => 'colorful dress fashion model woman',
+        'wax' => 'colorful print dress fashion model',
     ];
 
     /** Repli par catégorie si aucun mot-clé du nom ne correspond. */
@@ -95,8 +101,19 @@ class FetchDemoPhotos extends Command
 
         foreach ($products as $product) {
             $query = $this->resolveQuery($product);
+            $photos = $this->searchPexels($apiKey, $query, $perProduct + 15, $usedPhotoIds);
 
-            $photos = $this->searchPexels($apiKey, $query, $perProduct + 3, $usedPhotoIds);
+            // Repli : le pool de photos pour cette requête précise est épuisé
+            // (plusieurs produits partagent souvent le même mot-clé) — on
+            // retente avec la requête plus large de la catégorie avant d'abandonner.
+            if (empty($photos)) {
+                $fallbackQuery = self::CATEGORY_QUERIES[$product->category->name] ?? 'fashion model';
+
+                if ($fallbackQuery !== $query) {
+                    $photos = $this->searchPexels($apiKey, $fallbackQuery, $perProduct + 15, $usedPhotoIds);
+                    $query = $fallbackQuery;
+                }
+            }
 
             if (empty($photos)) {
                 $this->newLine();
@@ -160,7 +177,7 @@ class FetchDemoPhotos extends Command
             ->timeout(15)
             ->get('https://api.pexels.com/v1/search', [
                 'query' => $query,
-                'per_page' => min($perPage, 15),
+                'per_page' => min($perPage, 80), // 80 = maximum autorisé par l'API Pexels
                 'orientation' => 'portrait',
             ]);
 
