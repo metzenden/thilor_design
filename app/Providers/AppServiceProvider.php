@@ -7,10 +7,12 @@ use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Services\CartService;
 use App\Services\Payments\PaymentGatewayManager;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
@@ -53,6 +55,21 @@ class AppServiceProvider extends ServiceProvider
                 fn () => Category::where('is_active', true)->whereNull('parent_id')->orderBy('position')->get()
             ));
             $view->with('headerCartCount', app(CartService::class)->itemsCount());
+        });
+
+        // Fait suivre l'expéditeur des emails sur l'adresse de contact paramétrée
+        // dans le back-office (réglages du site) plutôt que sur MAIL_FROM_ADDRESS
+        // en dur — modifiable sans toucher au code ni au .env.
+        Event::listen(function (MessageSending $event) {
+            try {
+                $email = Setting::get('shop_email');
+            } catch (\Throwable) {
+                return;
+            }
+
+            if ($email) {
+                $event->message->from($email, Setting::get('shop_name', config('app.name')));
+            }
         });
     }
 
