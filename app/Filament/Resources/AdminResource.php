@@ -40,8 +40,12 @@ class AdminResource extends Resource
             Forms\Components\TextInput::make('email')->email()->required(),
             Forms\Components\TextInput::make('phone')->label('Téléphone'),
             Forms\Components\Select::make('roles')
-                ->relationship('roles', 'name')
-                ->options(['admin' => 'Administrateur', 'manager' => 'Gestionnaire'])
+                ->relationship('roles', 'name', fn (Builder $query) => $query->whereIn('name', ['admin', 'manager']))
+                ->getOptionLabelFromRecordUsing(fn ($record) => match ($record->name) {
+                    'admin' => 'Administrateur',
+                    'manager' => 'Gestionnaire',
+                    default => $record->name,
+                })
                 ->multiple()
                 ->required(),
             Forms\Components\TextInput::make('password')
