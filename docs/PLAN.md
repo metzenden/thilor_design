@@ -4,8 +4,10 @@
 - Cahier des charges : `PROMPT_CLAUDE_CODE_THILOR_DESIGN.pdf` (fourni par le client).
 - Maquette visuelle : écrans 01 Accueil, 02 Catalogue, 03 Fiche produit, 04 Panier,
   05 Checkout (infos/livraison), 06 Checkout (paiement), 07 Confirmation, 08 Mon compte.
-  Identité : élégance africaine, fond blanc cassé, accents dorés (#C89B3C-ish), bordeaux,
-  logo "TD" circulaire, typographie serif pour le nom de marque / sans-serif pour le reste.
+  Identité d'origine (approximée depuis la maquette, avant réception de la charte) : fond
+  blanc cassé, accents dorés (#C89B3C-ish), bordeaux, logo "TD" circulaire.
+  **Mise à jour** : la charte de marque officielle THILOR DESIGN a depuis été fournie par
+  le client et appliquée à la place de cette approximation — voir section 10.
 
 ## 2. Stack retenue
 - Laravel 12 (dernière stable), PHP 8.4 (disponible ; documenté comme "8.3+ recommandé,
@@ -78,3 +80,24 @@ Suit les phases 1 à 9 du cahier des charges. Chaque phase = commit(s) dédié(s
 - Cron uniquement si le scheduler Laravel est utilisé (à activer seulement si nécessaire
   côté back-office : ex. désactivation auto de promotions expirées) — documenté comme
   optionnel dans le guide de déploiement.
+
+## 10. Charte de marque officielle (appliquée en remplacement de la maquette)
+- Source : « Charte de marque THILOR DESIGN » (PDF fourni par le client) + 5 fichiers
+  logo PNG réels (wordmark complet, « THILOR » seul, monogramme « THR » — variantes
+  bleu nuit et chocolat), déposés dans `public/images/brand/`.
+- Couleurs officielles : bleu nuit `#101C2C`, chocolat `#3A2A22`, beige sable `#D8C7AD`,
+  crème `#F4F0E8`. Appliquées dans `tailwind.config.js` (tokens `ink`, `gold`, `sand`,
+  `cream` — noms de tokens conservés pour limiter le diff, mais valeurs 100% officielles).
+- Typographies officielles : Montserrat (titres) et Merriweather Sans (texte courant),
+  chargées via Google Fonts dans `resources/css/app.css`.
+- La charte ne définit pas de couleur d'alerte/promo. Le token `bordeaux` (utilisé pour
+  les badges de réduction et les actions de suppression) a été recoloré en un terracotta
+  sourd (`#8C3B2E`) choisi pour rester dans l'esprit chaud de la palette officielle,
+  plutôt que d'introduire une couleur hors charte — décision assumée, à ajuster si le
+  client préfère une autre teinte.
+- Logo : le header et le footer utilisent désormais l'image réelle du wordmark
+  (`thilor-design-navy.png`) à la place de l'icône SVG recréée précédemment (supprimée).
+- Point ouvert non résolu (à trancher avec le client) : la charte mentionne le domaine
+  `www.thilor.com` et une adresse email non finalisée (`XXXX@thilor.com`), alors que les
+  seeders/docs utilisent encore `thilor-design.com`. Aucune valeur n'a été inventée pour
+  l'email de contact public — à confirmer avant mise en production.

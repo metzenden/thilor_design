@@ -13,26 +13,36 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                serif: ['"Playfair Display"', ...defaultTheme.fontFamily.serif],
+                // Police de texte officielle de la charte THILOR DESIGN.
+                sans: ['"Merriweather Sans"', ...defaultTheme.fontFamily.sans],
+                // Clé "serif" conservée (reprise par toutes les vues) mais chargée
+                // avec Montserrat, la police de titres officielle de la charte —
+                // Montserrat n'est pas une police serif, seul le nom de la clé l'est.
+                serif: ['Montserrat', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                cream: '#FAF6EF',
+                // Palette officielle — charte de marque THILOR DESIGN.
+                cream: '#F4F0E8', // Crème
+                sand: '#D8C7AD', // Beige sable
+                // Couleur d'accent principale (boutons, liens actifs) : Chocolat.
                 gold: {
-                    DEFAULT: '#C89B3C',
-                    50: '#FBF4E4',
-                    100: '#F6E8C9',
-                    400: '#D4AE5C',
-                    500: '#C89B3C',
-                    600: '#A87F2C',
-                    700: '#8A6822',
+                    DEFAULT: '#3A2A22',
+                    50: '#F1E9E3',
+                    100: '#E3D4C8',
+                    400: '#6B5245',
+                    500: '#3A2A22',
+                    600: '#2C1F19',
+                    700: '#20150F',
                 },
+                // Accent secondaire (promotions, actions de suppression) : une
+                // teinte terracotta sourde choisie pour rester dans l'esprit de la
+                // palette officielle — la charte ne définit pas de couleur d'alerte.
                 bordeaux: {
-                    DEFAULT: '#7A2129',
-                    600: '#7A2129',
-                    700: '#5E1820',
+                    DEFAULT: '#8C3B2E',
+                    600: '#8C3B2E',
+                    700: '#6B2C22',
                 },
-                ink: '#241C15',
+                ink: '#101C2C', // Bleu nuit
             },
         },
     },

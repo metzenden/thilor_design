@@ -1,11 +1,8 @@
 @php($shopName = \App\Models\Setting::get('shop_name', 'THILOR DESIGN'))
 <header class="border-b border-ink/10 bg-cream" x-data="{ mobileOpen: false }">
     <div class="container-shop flex items-center gap-6 py-4">
-        <a href="{{ route('home') }}" class="flex items-center gap-3 shrink-0">
-            <x-brand-logo :size="44" />
-            <span class="hidden flex-col leading-tight sm:flex">
-                <span class="font-serif text-lg font-semibold tracking-wide text-ink">{{ $shopName }}</span>
-            </span>
+        <a href="{{ route('home') }}" class="flex shrink-0 items-center">
+            <img src="{{ asset('images/brand/thilor-design-navy.png') }}" alt="{{ $shopName }}" class="h-9 w-auto sm:h-10">
         </a>
 
         <form action="{{ route('catalog.index') }}" method="GET" class="hidden flex-1 md:block">

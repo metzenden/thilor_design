@@ -40,10 +40,10 @@ class ShopSeeder extends Seeder
     private function seedSettings(): void
     {
         Setting::set('shop_name', 'THILOR DESIGN');
-        Setting::set('shop_tagline', "L'élégance africaine à votre style");
-        Setting::set('shop_phone', '+221 77 123 45 67');
+        Setting::set('shop_tagline', 'STYLE | PURPOSE | EVERYDAY');
+        Setting::set('shop_phone', '+221 77 926 98 06');
         Setting::set('shop_email', 'contact@thilor-design.com');
-        Setting::set('shop_address', 'Rue 10, Liberté 6 Extension, Dakar, Sénégal');
+        Setting::set('shop_address', 'Ngor, Dakar, Sénégal');
         Setting::set('social_facebook', 'https://facebook.com/thilordesign');
         Setting::set('social_instagram', 'https://instagram.com/thilordesign');
         Setting::set('social_tiktok', 'https://tiktok.com/@thilordesign');

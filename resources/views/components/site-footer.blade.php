@@ -2,10 +2,7 @@
 <footer class="border-t border-ink/10 bg-white">
     <div class="container-shop grid grid-cols-2 gap-8 py-12 text-sm sm:grid-cols-3 lg:grid-cols-6">
         <div class="col-span-2 lg:col-span-2">
-            <div class="flex items-center gap-3">
-                <x-brand-logo :size="40" />
-                <span class="font-serif text-base font-semibold text-ink">{{ $shopName }}</span>
-            </div>
+            <img src="{{ asset('images/brand/thilor-design-navy.png') }}" alt="{{ $shopName }}" class="h-8 w-auto">
             <p class="mt-3 text-ink/60">{{ \App\Models\Setting::get('shop_tagline', "L'élégance africaine à votre style") }}</p>
         </div>
 

@@ -146,7 +146,7 @@
     @endif
 
     {{-- Newsletter --}}
-    <section class="bg-bordeaux py-12 text-center text-white">
+    <section class="bg-ink py-12 text-center text-white">
         <div class="container-shop">
             <h2 class="font-serif text-2xl font-semibold">Restez informée de nos nouveautés</h2>
             <p class="mt-2 text-white/80">Inscrivez-vous et recevez nos offres exclusives.</p>
